@@ -1,4 +1,4 @@
-const REDIRECTOR_URL = 'https://github.io/redirector/index.html';
+const REDIRECTOR_URL = 'https://vitalets.github.io/redirector/index.html';
 const DOMAINS = [
   {
     domain: 'zakonchi-poslovitsu.vitalets.xyz',
