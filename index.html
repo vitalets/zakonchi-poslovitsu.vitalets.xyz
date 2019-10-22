@@ -3,8 +3,14 @@
 <head>
 </head>
 <body>
-  <div id="error" style="color:red"></div>
-  <script>"use strict";var REDIRECTOR_URL="https://vitalets.github.io/redirector/index.html",REDIRECTOR_PARAMS={web:"https://vk.com/zakonchi_poslovitsu",ios:"vk://vk.com/zakonchi_poslovitsu",android:"intent://vk.com/zakonchi_poslovitsu#Intent;package=com.vkontakte.android;scheme=vkontakte;end"};window.onerror=function(a){return showError(a.message)},main();function main(){location.href=buildUrl(REDIRECTOR_URL,REDIRECTOR_PARAMS)}function buildUrl(a,b){var c=Object.keys(b).map(function(a){return"".concat(a,"=").concat(encodeURIComponent(b[a]))}).join("&");return a+(c?"?"+c:"")}function showError(a){document.getElementById("error").textContent=a}
+  <script>"use strict";redirect({webUrl:"https://vk.com/zakonchi_poslovitsu",iosUrl:"vk://vk.com/zakonchi_poslovitsu",androidUrl:"intent://vk.com/zakonchi_poslovitsu#Intent;package=com.vkontakte.android;scheme=vkontakte;end"});/**
+ * Opens webpage and also tries to open mobile app.
+ * @param {string} webUrl
+ * @param {string} iosUrl
+ * @param {string} androidUrl
+ */function redirect(a){var b=a.webUrl,c=a.iosUrl,d=a.androidUrl;window.onerror=function(a){return showError(a.message)},b?setTimeout(function(){return location.href=b},500):showError("No \"webUrl\" parameter found in url: ".concat(location.href)),c&&isIos()&&(location.href=c),d&&isAndroid()&&(location.href=d)}// see: https://stackoverflow.com/questions/6031412/detect-android-phone-via-javascript-jquery
+function isAndroid(){return /android/i.test(navigator.userAgent)}// see: https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+function isIos(){return /iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream}function showError(a){var b=document.createElement("div");b.style.color="red",b.textContent=a,document.body.appendChild(b)}
 
 </script>
 </body>

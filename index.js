@@ -1,23 +1,49 @@
-const REDIRECTOR_URL = 'https://vitalets.github.io/redirector/index.html';
-const REDIRECTOR_PARAMS = {
-  web: 'https://vk.com/zakonchi_poslovitsu',
-  ios: 'vk://vk.com/zakonchi_poslovitsu',
-  android: 'intent://vk.com/zakonchi_poslovitsu#Intent;package=com.vkontakte.android;scheme=vkontakte;end'
-};
+redirect({
+  webUrl: 'https://vk.com/zakonchi_poslovitsu',
+  iosUrl: 'vk://vk.com/zakonchi_poslovitsu',
+  androidUrl: 'intent://vk.com/zakonchi_poslovitsu#Intent;package=com.vkontakte.android;scheme=vkontakte;end'
+});
 
-window.onerror = e => showError(e.message);
+/**
+ * Opens webpage and also tries to open mobile app.
+ * @param {string} webUrl
+ * @param {string} iosUrl
+ * @param {string} androidUrl
+ */
+function redirect({webUrl, iosUrl, androidUrl}) {
+  window.onerror = e => showError(e.message);
 
-main();
+  // always open web page as fallback
+  if (webUrl) {
+    setTimeout(() => location.href = webUrl, 500);
+  } else {
+    showError(`No "webUrl" parameter found in url: ${location.href}`);
+  }
 
-function main() {
-  location.href = buildUrl(REDIRECTOR_URL, REDIRECTOR_PARAMS);
+  // try open ios app
+  if (iosUrl && isIos()) {
+    location.href = iosUrl;
+  }
+
+  // try open android app
+  if (androidUrl && isAndroid()) {
+    location.href = androidUrl;
+  }
 }
 
-function buildUrl(baseUrl, params) {
-  const query = Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
-  return baseUrl + (query ? '?' + query : '');
+// see: https://stackoverflow.com/questions/6031412/detect-android-phone-via-javascript-jquery
+function isAndroid() {
+  return /android/i.test(navigator.userAgent);
+}
+
+// see: https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+function isIos() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 }
 
 function showError(message) {
-  document.getElementById('error').textContent = message;
+  const el = document.createElement('div');
+  el.style.color = 'red';
+  el.textContent = message;
+  document.body.appendChild(el);
 }
