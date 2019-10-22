@@ -1,26 +1,16 @@
 const REDIRECTOR_URL = 'https://vitalets.github.io/redirector/index.html';
-const DOMAINS = [
-  {
-    domain: 'zakonchi-poslovitsu.vitalets.xyz',
-    params: {
-      web: 'https://vk.com/zakonchi_poslovitsu',
-      ios: 'vk://vk.com/zakonchi_poslovitsu',
-      android: 'intent://vk.com/zakonchi_poslovitsu#Intent;package=com.vkontakte.android;scheme=vkontakte;end'
-    }
-  }
-];
+const REDIRECTOR_PARAMS = {
+  web: 'https://vk.com/zakonchi_poslovitsu',
+  ios: 'vk://vk.com/zakonchi_poslovitsu',
+  android: 'intent://vk.com/zakonchi_poslovitsu#Intent;package=com.vkontakte.android;scheme=vkontakte;end'
+};
 
 window.onerror = e => showError(e.message);
 
 main();
 
 function main() {
-  const redirect = DOMAINS.find(item => location.hostname === item.domain);
-  if (redirect) {
-    location.href = buildUrl(REDIRECTOR_URL, redirect.params);
-  } else {
-    showError(`Redirect not found: ${location.href}`);
-  }
+  location.href = buildUrl(REDIRECTOR_URL, REDIRECTOR_PARAMS);
 }
 
 function buildUrl(baseUrl, params) {

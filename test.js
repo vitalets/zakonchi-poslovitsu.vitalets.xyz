@@ -1,6 +1,8 @@
+const path = require('path');
 const assert = require('chai').assert;
 const puppeteer = require('puppeteer');
 
+const INDEX_HTML = `file://${path.resolve('index.html')}`;
 let browser, page;
 
 before(async () => {
@@ -10,8 +12,8 @@ before(async () => {
   await page.setCacheEnabled(false);
 });
 
-it('zakonchi-poslovitsu.vitalets.xyz', async () => {
-  await page.goto('https://zakonchi-poslovitsu.vitalets.xyz');
+it('should redirect to vk', async () => {
+  await page.goto(INDEX_HTML);
   await page.waitFor(1000);
   assert.strictEqual(page.url(), 'https://vk.com/zakonchi_poslovitsu');
 });
